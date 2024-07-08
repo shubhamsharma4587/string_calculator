@@ -4,7 +4,16 @@ class StringCalculator
   def self.add(input_string)
     unless input_string.empty?
       result  = 0
-      array = input_string.gsub("\n",",").split(",")
+
+      delimiter = ","
+      if input_string.start_with?("//")
+        parts = input_string.split("\n")
+        delimiter = parts[0].split('//').last
+        input_string = parts[1]
+      end
+      input_string = input_string.gsub("\n", delimiter)
+      array = input_string.split(delimiter).map(&:to_i)
+
       num_arry = array.map(&:to_i)
       num_arry.each do |num|
         result+=num
@@ -18,4 +27,4 @@ class StringCalculator
 end
 
 
-puts StringCalculator.add("1\n,2")
+puts StringCalculator.add("//;\n1;2")
